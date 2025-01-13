@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Station Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Weather Station Data</h1>
+    <table id="weather-table">
+        <thead>
+            <tr>
+                <th>Timestamp</th>
+                <th>Record #</th>
+                <th>Temp Max (°F)</th>
+                <th>Temp Min (°F)</th>
+                <th>Temp Avg (°F)</th>
+                <th>Wind Chill (°F)</th>
+                <th>Wind Max (mph)</th>
+                <th>Wind Min (mph)</th>
+                <th>Wind Avg (mph)</th>
+                <th>Wind Dir (°)</th>
+                <th>Humidity (%)</th>
+                <th>Dew Point (°F)</th>
+                <th>Pressure (inHg)</th>
+                <th>Battery (V)</th>
+                <th>Panel Temp (°F)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows will appear here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Function to fetch and update the table data
+        function fetchWeatherData() {
+            fetch('http://localhost:5000/get_weather_data')  // Flask endpoint
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('#weather-table tbody');
+                    tableBody.innerHTML = ""; // Clear existing table rows
+
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${row.Timestamp}</td>
+                            <td>${row.RecordNumber}</td>
+                            <td>${row.TempMax}</td>
+                            <td>${row.TempMin}</td>
+                            <td>${row.TempAvg}</td>
+                            <td>${row.WindChill}</td>
+                            <td>${row.WindMax}</td>
+                            <td>${row.WindMin}</td>
+                            <td>${row.WindAvg}</td>
+                            <td>${row.WindDir}</td>
+                            <td>${row.Humidity}</td>
+                            <td>${row.DewPoint}</td>
+                            <td>${row.Pressure}</td>
+                            <td>${row.BatteryVoltage}</td>
+                            <td>${row.PanelTemp}</td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Initial fetch
+        fetchWeatherData();
+
+        // Refresh data every 20 minutes (20 * 60 * 1000 ms)
+        setInterval(fetchWeatherData, 20 * 60 * 1000);
+    </script>
+</body>
+</html>

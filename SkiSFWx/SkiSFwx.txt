@@ -1,0 +1,36 @@
+STEPS TO IMPLEMENT:
+
+Server-side Script:
+
+- The .dat file needs to be read on the server side. This can be done using a backend language like Python or PHP.
+- The server script reads the .dat file and sends its content to the frontend in a readable format (e.g., JSON or plain text).
+
+Frontend Page:
+
+- The HTML page will use JavaScript to periodically fetch updated data from the server (every 20 minutes using setInterval).
+- The JavaScript parses the data and updates the table dynamically.
+
+Deployment:
+
+- You need a web server (e.g., Apache, NGINX, Flask) to host the page and serve the data.
+
+
+* Access the endpoint at http://localhost:5000/get_weather_data. It will return the latest data in JSON format.
+
+
+HOW IT WORKS: 
+
+Backend:
+
+- Reads the continuously updated .dat file.
+- Serves the latest 50 rows (or any desired number) as a JSON response via an API endpoint (/get_weather_data).
+
+Frontend:
+
+- Fetches data from the endpoint every 20 minutes using setInterval.
+- Dynamically updates the table with the new data.
+
+
+
+Ensure the .dat file path is correct and accessible by the Python script.
+Run the Flask server (python app.py), and keep it running.
